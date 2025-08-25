@@ -11,32 +11,35 @@ const movieSchema = new mongoose.Schema({
   thumbnail_height: { type: Number, required: false },
 });
 
+
+const Movie = mongoose.model("Movie", movieSchema);
+
+export default Movie;
+
 export let getMovies = async function () {
-  let movies = await Movie.find().sort({ year: -1 }).limit(20);
-  return movies;
+  return await Movie.find().sort({ year: -1 }).limit(20);
 };
 
 export let findMovies = async function (query, searchIn) {
   if (searchIn === "title") {
-    let movies = await Movie.find({ title: { $regex: query, $options: "i" } });
-    return movies;
+    return await Movie.find({ title: { $regex: query, $options: "i" } });
   } else if (searchIn === "cast") {
-    let movies = await Movie.find({ cast: { $regex: query, $options: "i" } });
-    return movies;
+    return await Movie.find({ cast: { $regex: query, $options: "i" } });
   }
+  return []; // default لو searchIn مش متعرف
 };
 
 export let findMoviesByGenre = async function (genre) {
-  let movies = await Movie.find({ genres: { $regex: genre, $options: "i" } })
+  return await Movie.find({ genres: { $regex: genre, $options: "i" } })
     .sort({ year: -1 })
     .limit(20);
-  return movies;
 };
 
 export let addNewMovie = async function (data) {
-  let { title, year, genre, cast, thumbnail } = data;
-  let genres = genre.split(",").map((g) => g.trim());
-  let castArray = cast.split(",").map((c) => c.trim());
+  let { title, year, genre = "", cast = "", thumbnail } = data;
+  let genres = genre ? genre.split(",").map((g) => g.trim()) : [];
+  let castArray = cast ? cast.split(",").map((c) => c.trim()) : [];
+
   let movie = new Movie({
     title,
     year,
@@ -44,29 +47,26 @@ export let addNewMovie = async function (data) {
     cast: castArray,
     thumbnail,
   });
+
   await movie.save();
 };
 
 export let getMovieById = async function (id) {
-  let movie = await Movie.findById(id);
-  return movie;
+  return await Movie.findById(id);
 };
 
-export let editMovie = async function (id,data) {
-  let { title, year, genre, cast, thumbnail } = data;
-  let genres = genre.split(",").map((g) => g.trim());
-  let castArray = cast.split(",").map((c) => c.trim());
-  await Movie.findByIdAndUpdate(id, {
-    title,
-    year,
-    genres,
-    cast: castArray,
-    thumbnail,
-  });
+export let editMovie = async function (id, data) {
+  let { title, year, genre = "", cast = "", thumbnail } = data;
+  let genres = genre ? genre.split(",").map((g) => g.trim()) : [];
+  let castArray = cast ? cast.split(",").map((c) => c.trim()) : [];
+
+  await Movie.findByIdAndUpdate(
+    id,
+    { title, year, genres, cast: castArray, thumbnail },
+    { new: true }
+  );
 };
 
 export let deleteMovie = async function (id) {
   await Movie.findByIdAndDelete(id);
 };
-
-export const Movie = mongoose.model("Movie", movieSchema);

@@ -1,14 +1,14 @@
 import express from "express";
 
 import {
-  indexController,
-  searchController,
-  addMovieGetController,
-  addMoviePostController,
-  searchByGenreController,
-  editMovieGetController,
-  editMoviePostController,
-  deleteMovieController,
+    indexController,
+    searchController,
+    addMovieGetController,
+    addMoviePostController,
+    searchByGenreController,
+    editMovieGetController,
+    editMoviePostController,
+    deleteMovieController,
 } from "./controllers/movie.controller.js";
 
 export const router = express.Router();

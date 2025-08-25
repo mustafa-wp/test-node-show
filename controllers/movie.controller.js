@@ -1,4 +1,3 @@
-import express from "express";
 import {
   getMovies,
   findMovies,
@@ -23,7 +22,6 @@ export async function searchController(req, res) {
   }
 
   let movies = await findMovies(query, searchIn);
-
   res.render("index", { movies });
 }
 
@@ -42,17 +40,17 @@ export async function searchByGenreController(req, res) {
   res.render("index", { movies });
 }
 
-export let editMovieGetController = async function (req, res) {
+export async function editMovieGetController(req, res) {
   let movie = await getMovieById(req.params.id);
   res.render("edit", { movie });
-};
+}
 
-export let editMoviePostController = async function (req, res) {
+export async function editMoviePostController(req, res) {
   await editMovie(req.params.id, req.body);
   res.redirect("/");
-};
+}
 
-export let deleteMovieController = async function (req, res) {
-  deleteMovie(req.params.id);
+export async function deleteMovieController(req, res) {
+  await deleteMovie(req.params.id);
   res.redirect("/");
-};
+}

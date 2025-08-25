@@ -1,0 +1,94 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Add a Movie</title>
+    <style>
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f9fafb;
+        margin: 0;
+        padding: 0;
+      }
+
+      h1 {
+        text-align: center;
+        margin: 30px 0 20px;
+        font-size: 2rem;
+        color: #333;
+      }
+
+      form {
+        max-width: 450px;
+        margin: 0 auto;
+        padding: 25px 30px;
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      }
+
+      label {
+        display: block;
+        margin-bottom: 6px;
+        font-weight: 600;
+        color: #444;
+        font-size: 0.95rem;
+      }
+
+      input[type="text"] {
+        width: 100%;
+        padding: 12px;
+        margin-bottom: 18px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        font-size: 1rem;
+        transition: border 0.2s, box-shadow 0.2s;
+      }
+
+      input[type="text"]:focus {
+        outline: none;
+        border-color: #2563eb;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+      }
+
+      input[type="submit"] {
+        width: 100%;
+        background-color: #2563eb;
+        color: white;
+        padding: 12px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 1rem;
+        font-weight: 600;
+        transition: background 0.2s;
+      }
+
+      input[type="submit"]:hover {
+        background-color: #1e40af;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Add a Movie</h1>
+
+    <form action="/add" method="post">
+      <label for="title">Title</label>
+      <input type="text" id="title" name="title" required />
+
+      <label for="year">Year</label>
+      <input type="text" id="year" name="year" required />
+
+      <label for="genre">Genre</label>
+      <input type="text" id="genre" name="genre" required />
+
+      <label for="cast">Cast (comma separated)</label>
+      <input type="text" id="cast" name="cast" required />
+
+      <label for="thumbnail">Thumbnail URL</label>
+      <input type="text" id="thumbnail" name="thumbnail" required />
+
+      <input type="submit" value="➕ Add Movie" />
+    </form>
+  </body>
+</html>

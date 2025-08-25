@@ -1,0 +1,225 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Movie App</title>
+    <style>
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f9fafb;
+        margin: 0;
+        padding: 0;
+      }
+
+      h1 {
+        text-align: center;
+        margin: 30px 0 10px;
+        font-size: 2.5rem;
+        color: #333;
+      }
+
+      /* Search Form */
+      #searchForm {
+        max-width: 500px;
+        margin: 0 auto 30px;
+        padding: 20px;
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      }
+
+      #searchForm input[type="text"] {
+        width: 100%;
+        padding: 12px;
+        margin-bottom: 15px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        font-size: 1rem;
+      }
+
+      #searchForm label {
+        margin-right: 10px;
+        font-size: 0.95rem;
+        color: #555;
+      }
+
+      #searchForm input[type="radio"] {
+        margin-right: 5px;
+      }
+
+      #searchForm button {
+        background-color: #2563eb;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 1rem;
+        transition: background 0.2s;
+      }
+
+      #searchForm button:hover {
+        background-color: #1e40af;
+      }
+
+      /* Genre Buttons */
+      .genres {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+
+      .genres form {
+        display: inline-block;
+        margin: 5px;
+      }
+
+      .genres button, .info button {
+        background-color: #10b981;
+        color: white;
+        padding: 10px 18px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 1rem;
+        transition: background 0.2s;
+      }
+
+      .genres button:hover {
+        background-color: #047857;
+      }
+
+      /* Add New Movie Button */
+      #addForm {
+        text-align: center;
+        margin: 20px 0;
+      }
+
+      #addForm button {
+        background-color: #f59e0b;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 1rem;
+        transition: background 0.2s;
+      }
+
+      #addForm button:hover {
+        background-color: #b45309;
+      }
+
+      /* Movie Cards */
+      .movie {
+        max-width: 800px;
+        margin: 20px auto;
+        display: flex;
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        overflow: hidden;
+        transition: transform 0.2s;
+      }
+
+      .movie:hover {
+        transform: scale(1.02);
+      }
+
+      .movie img {
+        width: 140px;
+        height: 200px;
+        object-fit: cover;
+      }
+
+      .movie .info {
+        flex: 1;
+        padding: 15px 20px;
+      }
+
+      .movie .info h2 {
+        margin: 0;
+        font-size: 1.4rem;
+        color: #111;
+      }
+
+      .movie .info p {
+        margin: 8px 0;
+        font-size: 0.95rem;
+        color: #444;
+      }
+
+      .movie .info ul {
+        list-style: none;
+        padding: 0;
+        margin: 5px 0 10px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .movie .info li {
+        background: #e5e7eb;
+        padding: 5px 10px;
+        border-radius: 6px;
+        font-size: 0.85rem;
+      }
+      .info button a{
+        text-decoration: none;
+        color: white;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Movie App</h1>
+
+    <form action="/search" method="get" id="searchForm">
+      <input
+        type="text"
+        name="term"
+        id="term"
+        placeholder="Search for movies..."
+      />
+      <label for="title"
+        ><input type="radio" name="in" value="title" id="title" checked /> Title</label
+      >
+      <label for="cast"
+        ><input type="radio" name="in" value="cast" id="cast" /> Cast</label
+      >
+      <br /><br />
+      <button type="submit">Search</button>
+    </form>
+
+    <div class="genres">
+      <a href="/action"><button type="button">Action</button></a>
+      <a href="/drama"><button type="button">Drama</button></a>
+      <a href="/comedy"><button type="button">Comedy</button></a>
+    </div>
+
+    <form action="/add" method="get" id="addForm">
+      <button type="submit">➕ Add New Movie</button>
+    </form>
+
+    <% movies.forEach(movie => { %>
+    <div class="movie">
+      <img src="<%= movie.thumbnail %>" alt="<%= movie.title %>" />
+      <div class="info">
+        <h2><%= movie.title %> (<%= movie.year %>)</h2>
+        <p><strong>Cast</strong></p>
+        <ul>
+          <% movie.cast.forEach(member => { %>
+          <li><%= member %></li>
+          <% }) %>
+        </ul>
+        <p><strong>Genres</strong></p>
+        <ul>
+          <% movie.genres.forEach(genre => { %>
+          <li><%= genre %></li>
+          <% }) %>
+        </ul>
+        <p><%= movie.extract %></p>
+        <button><a href="/edit/<%= movie._id %>">Edit</a></bu>
+      </div>
+    </div>
+    <% }) %>
+  </body>
+</html>

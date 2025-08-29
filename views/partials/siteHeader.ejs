@@ -8,16 +8,67 @@
         <%= pageTitle %>
     </title>
     <link rel="stylesheet" href="/css/siteStyle.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 
 <body>
 
+    <!-- Header -->
+    <header class="site-header">
+        <h1>
+            <a href="/movies" style="color:white; text-decoration:none;">Site Name</a>
+            <img src="/img/logo.png" alt="logo">
+        </h1>
+        <nav class="nav-links">
+            <a href="/movies">Home</a>
+            <a href="/movies/action">Action</a>
+            <a href="/movies/drama">Drama</a>
+            <a href="/movies/comedy">Comedy</a>
+            <a href="/movies/Science Fiction">Sci-Fi</a>
+            <a href="/movies/horror">Horror</a>
+        </nav>
+        <button class="menu-btn" id="openMenu">&#9776;</button>
+    </header>
 
-    <h3>
-        <a href="http://localhost:3001/movies">Site Name</a>
-        <img src="/img/logo.png" width="55" alt="">
-    </h3>
-    <!-- <nav>    
-    <div><a href="/products">Product CRUD main page</a></div>
-</nav> -->
-    <hr>
+    <!-- Sidebar (mobile) -->
+    <aside class="sidebar" id="sidebar">
+        <button class="close-btn" id="closeMenu">&times;</button>
+        <h2 style="color: azure;">Site Name</h2>
+        <a href="/movies">Home</a>
+        <a href="/movies/action">Action</a>
+        <a href="/movies/drama">Drama</a>
+        <a href="/movies/comedy">Comedy</a>
+        <a href="/movies/Science Fiction">Sci-Fi</a>
+        <a href="/movies/horror">Horror</a>
+    </aside>
+
+    <!-- Overlay -->
+    <div class="overlay" id="overlay"></div>
+
+    <!-- Footer -->
+
+    <script>
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('overlay');
+        const openMenu = document.getElementById('openMenu');
+        const closeMenu = document.getElementById('closeMenu');
+
+        openMenu.addEventListener('click', () => {
+            sidebar.classList.add('active');
+            overlay.classList.add('active');
+        });
+
+        closeMenu.addEventListener('click', () => {
+            sidebar.classList.remove('active');
+            overlay.classList.remove('active');
+        });
+
+        overlay.addEventListener('click', () => {
+            sidebar.classList.remove('active');
+            overlay.classList.remove('active');
+        });
+    </script>
+
+</body>
+
+</html>

@@ -1,18 +1,10 @@
 const { MongoClient, ObjectId, mongoConnection } = require('./mongodbConnection');
 
-/* async function index() {
-    const client = await MongoClient.connect(mongoConnection);
-    const db = client.db();
-    const movies = await db.collection("movies").find().sort("year" , -1).limit(20).toArray();
-    client.close();
-    return renameMoviesID(movies);
-} */
-
 async function index(req) {
     const client = await MongoClient.connect(mongoConnection);
     const db = client.db();
 
-    const { actor, year } = req.query; // const acror = req.query.actor; const year = req.query.year;
+    const { actor, year } = req.query;
 
     let query = {};
 
@@ -25,10 +17,17 @@ async function index(req) {
 
     let movies = [];
     if (!actor && !year) {
-        movies = await db.collection("movies").find().sort({ year: -1 }).limit(25).toArray();
-    }
-    else {
-        movies = await db.collection("movies").find({ $and: [query] }).sort({ year: -1 }).limit(19).toArray();
+        movies = await db.collection("movies")
+            .find()
+            .sort({ year: -1 })
+            .limit(25)
+            .toArray();
+    } else {
+        movies = await db.collection("movies")
+            .find(query)
+            .sort({ year: -1 })
+            .limit(20)
+            .toArray();
     }
 
     client.close();
@@ -38,14 +37,14 @@ async function index(req) {
 async function show(id) {
     const client = await MongoClient.connect(mongoConnection);
     const db = client.db();
-    const movies = await db.collection("movies").find({ _id: new ObjectId(String(id)) }).toArray();
+    const movies = await db.collection("movies")
+        .find({ _id: new ObjectId(String(id)) })
+        .toArray();
     client.close();
     return renameMoviesID(movies);
 }
 
-
 async function searchMovie(searchForm) {
-
     const searchText = searchForm.searchText;
     const searchType = searchForm.searchType;
 
@@ -55,21 +54,50 @@ async function searchMovie(searchForm) {
     let movies = [];
 
     if (searchType === "title") {
-        movies = await db.collection("movies").find({ title: { $regex: searchText, $options: 'i' } }).sort({ year: -1 }).limit(20).toArray();
+        movies = await db.collection("movies")
+            .find({ title: { $regex: searchText, $options: 'i' } })
+            .sort({ year: -1 })
+            .limit(20)
+            .toArray();
     }
+
     if (searchType === "actor") {
-        movies = await db.collection("movies").find({ cast: { $regex: searchText, $options: 'i' } }).sort({ year: -1 }).limit(20).toArray();
+        movies = await db.collection("movies")
+            .find({ cast: { $regex: searchText, $options: 'i' } })
+            .sort({ year: -1 })
+            .limit(20)
+            .toArray();
+    }
+
+    if (searchType === "year") {
+        const yearNumber = parseInt(searchText);
+
+        movies = await db.collection("movies")
+            .find({
+                $or: [
+                    { year: yearNumber },               // لو مخزنة كـ Number
+                    { year: { $in: [yearNumber] } }     // لو مخزنة كـ Array
+                ]
+            })
+            .sort({ year: -1 })
+            .limit(20)
+            .toArray();
     }
 
     client.close();
     return renameMoviesID(movies);
 }
 
-
 async function searchMovieGenres(movieGenres) {
     const client = await MongoClient.connect(mongoConnection);
     const db = client.db();
-    const movies = await db.collection("movies").find({ genres: { $regex: movieGenres, $options: 'i' } }).sort({ year: -1 }).limit(20).toArray();
+
+    const movies = await db.collection("movies")
+        .find({ genres: { $regex: movieGenres, $options: 'i' } })
+        .sort({ year: -1 })
+        .limit(20)
+        .toArray();
+
     client.close();
     return renameMoviesID(movies);
 }
